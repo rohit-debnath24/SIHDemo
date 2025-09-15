@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add a Dog - PawHaven</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <!-- Header -->
+    <header class="bg-white/90 backdrop-blur-lg shadow-sm sticky top-0 z-50">
+      <div class="container mx-auto flex items-center justify-between p-4">
+        <a href="sihc.html" class="text-2xl font-bold text-rose-600 flex items-center gap-2">
+          <i data-lucide="paw-print" class="w-6 h-6"></i> PawHaven
+        </a>
+      </div>
+    </header>
+
+    <!-- Add Dog Form -->
+    <main class="py-12 sm:py-16 px-4 sm:px-6">
+        <div class="max-w-3xl mx-auto">
+            <div class="text-center mb-10">
+                <h2 class="text-4xl md:text-5xl font-extrabold text-rose-700">List a Dog for Adoption</h2>
+                <p class="text-gray-600 mt-3 max-w-2xl mx-auto">Help a furry friend find their forever home. Please provide the following details.</p>
+            </div>
+            
+            <div class="bg-white rounded-2xl shadow-2xl shadow-rose-100/50 overflow-hidden">
+                <form id="add-dog-form" class="p-8 sm:p-10 space-y-8">
+                    
+                    <!-- Image Upload Section -->
+                    <div>
+                        <label class="block text-lg font-semibold text-gray-800 mb-2">Dog's Photos</label>
+                        <div class="mt-2 flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-xl p-6">
+                            <div id="previews-container" class="flex flex-wrap justify-center gap-4 mb-4">
+                                <!-- Image previews will be inserted here -->
+                            </div>
+                            <div id="upload-placeholder" class="text-center">
+                                <i data-lucide="image-plus" class="mx-auto h-12 w-12 text-gray-400"></i>
+                                <p class="mt-2 text-sm text-gray-600">Upload one or more files</p>
+                                <p class="text-xs text-gray-500">First image will be the main one</p>
+                            </div>
+                            <label for="dog-images" class="relative cursor-pointer mt-4 inline-block bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                <span>Upload files</span>
+                                <input id="dog-images" name="dog-images" type="file" class="sr-only" accept="image/*" multiple>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Dog Details Section -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-6">
+                        <div class="sm:col-span-2">
+                            <label for="dog-name" class="block text-sm font-medium text-gray-800 mb-1">Dog's Name</label>
+                            <input type="text" id="dog-name" name="dog-name" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-rose-500 focus:ring focus:ring-rose-500 focus:ring-opacity-50 transition">
+                        </div>
+
+                        <div>
+                            <label for="dog-breed" class="block text-sm font-medium text-gray-800 mb-1">Breed</label>
+                            <select id="dog-breed" name="dog-breed" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-rose-500 focus:ring focus:ring-rose-500 focus:ring-opacity-50 transition">
+                                <option>Labrador Retriever</option>
+                                <option>German Shepherd</option>
+                                <option>Golden Retriever</option>
+                                <option>Beagle</option>
+                                <option>Poodle</option>
+                                <option>Bulldog</option>
+                                <option>Pomeranian</option>
+                                <option>Chihuahua</option>
+                                <option>Mixed Breed</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="dog-age" class="block text-sm font-medium text-gray-800 mb-1">Age</label>
+                            <div class="flex gap-2">
+                                <input type="number" id="dog-age" name="dog-age" required min="0" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-rose-500 focus:ring focus:ring-rose-500 focus:ring-opacity-50 transition">
+                                <select id="dog-age-unit" name="dog-age-unit" class="mt-1 block w-1/2 rounded-lg border-gray-300 shadow-sm focus:border-rose-500 focus:ring focus:ring-rose-500 focus:ring-opacity-50 transition">
+                                    <option>Years</option>
+                                    <option>Months</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-800 mb-1">Gender</label>
+                            <div class="flex items-center gap-4 mt-2">
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="gender" value="Male" required class="form-radio text-rose-600 focus:ring-rose-500">
+                                    <span class="ml-2">Male</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="gender" value="Female" class="form-radio text-rose-600 focus:ring-rose-500">
+                                    <span class="ml-2">Female</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="dog-size" class="block text-sm font-medium text-gray-800 mb-1">Size</label>
+                            <select id="dog-size" name="dog-size" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-rose-500 focus:ring focus:ring-rose-500 focus:ring-opacity-50 transition">
+                                <option>Small (0-25 lbs)</option>
+                                <option>Medium (26-60 lbs)</option>
+                                <option>Large (61-100 lbs)</option>
+                                <option>Extra Large (101+ lbs)</option>
+                            </select>
+                        </div>
+
+                        <div class="sm:col-span-2">
+                            <label for="dog-vaccinated" class="block text-sm font-medium text-gray-800 mb-1">Vaccination Status</label>
+                            <select id="dog-vaccinated" name="dog-vaccinated" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-rose-500 focus:ring focus:ring-rose-500 focus:ring-opacity-50 transition">
+                                <option>Fully Vaccinated</option>
+                                <option>Partially Vaccinated</option>
+                                <option>Not Vaccinated</option>
+                            </select>
+                        </div>
+
+                        <div class="sm:col-span-2">
+                            <label for="dog-description" class="block text-sm font-medium text-gray-800 mb-1">Description</label>
+                            <textarea id="dog-description" name="dog-description" rows="4" required placeholder="e.g., Temperament, special needs, fun facts..." class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-rose-500 focus:ring focus:ring-rose-500 focus:ring-opacity-50 transition"></textarea>
+                        </div>
+                    </div>
+                    
+                    <hr class="border-gray-200">
+
+                    <!-- Owner Details Section -->
+                    <div class="space-y-6">
+                        <div class="text-left">
+                            <h3 class="text-lg font-semibold text-teal-700">Your Contact Information</h3>
+                        </div>
+                        <div>
+                            <label for="owner-name" class="block text-sm font-medium text-gray-800 mb-1">Your Name</label>
+                            <input type="text" id="owner-name" name="owner-name" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-rose-500 focus:ring focus:ring-rose-500 focus:ring-opacity-50 transition">
+                        </div>
+                        <div>
+                            <label for="owner-contact" class="block text-sm font-medium text-gray-800 mb-1">Your Contact (Phone or Email)</label>
+                            <input type="text" id="owner-contact" name="owner-contact" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-rose-500 focus:ring focus:ring-rose-500 focus:ring-opacity-50 transition">
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="pt-4">
+                        <button type="submit" class="w-full bg-rose-600 text-white px-6 py-4 rounded-full text-lg font-semibold shadow-lg hover:bg-rose-700 transition-transform transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-rose-300">
+                            List My Dog
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        lucide.createIcons();
+
+        const dogImagesInput = document.getElementById('dog-images');
+        const previewsContainer = document.getElementById('previews-container');
+        const uploadPlaceholder = document.getElementById('upload-placeholder');
+        let uploadedImageUrls = [];
+
+        dogImagesInput.addEventListener('change', async (event) => {
+            const files = event.target.files;
+            if (!files || files.length === 0) {
+                previewsContainer.innerHTML = '';
+                uploadPlaceholder.classList.remove('hidden');
+                return;
+            }
+
+            previewsContainer.innerHTML = ''; // Clear existing previews
+            uploadPlaceholder.classList.add('hidden');
+            uploadedImageUrls = [];
+
+            const filePromises = Array.from(files).map(file => {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        // Create preview element
+                        const previewWrapper = document.createElement('div');
+                        previewWrapper.className = 'relative w-24 h-24';
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.className = 'w-full h-full rounded-lg object-cover shadow-md';
+                        previewWrapper.appendChild(img);
+                        previewsContainer.appendChild(previewWrapper);
+                        
+                        resolve(e.target.result);
+                    };
+                    reader.onerror = reject;
+                    reader.readAsDataURL(file);
+                });
+            });
+
+            uploadedImageUrls = await Promise.all(filePromises);
+            
+            // Add a "Main" badge to the first image
+            const firstPreview = previewsContainer.querySelector('div');
+            if (firstPreview) {
+                const badge = document.createElement('span');
+                badge.className = 'absolute top-0 right-0 bg-rose-600 text-white text-xs font-bold px-2 py-1 rounded-bl-lg rounded-tr-lg';
+                badge.textContent = 'Main';
+                firstPreview.appendChild(badge);
+            }
+        });
+
+        document.getElementById('add-dog-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            if (uploadedImageUrls.length === 0) {
+                alert('Please upload at least one image of the dog.');
+                return;
+            }
+
+            const newDog = {
+                // id is now generated by the backend
+                name: document.getElementById('dog-name').value,
+                imageUrls: uploadedImageUrls,
+                breed: document.getElementById('dog-breed').value,
+                age: document.getElementById('dog-age').value,
+                ageUnit: document.getElementById('dog-age-unit').value,
+                gender: document.querySelector('input[name="gender"]:checked').value,
+                size: document.getElementById('dog-size').value,
+                vaccination: document.getElementById('dog-vaccinated').value,
+                description: document.getElementById('dog-description').value,
+                ownerName: document.getElementById('owner-name').value,
+                ownerContact: document.getElementById('owner-contact').value,
+            };
+
+            try {
+                const response = await fetch('http://127.0.0.1:5000/api/dogs', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(newDog),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to add dog. Server responded with ' + response.status);
+                }
+
+                alert('Dog added successfully!');
+                window.location.href = 'sihc.html';
+
+            } catch (error) {
+                console.error('Error adding dog:', error);
+                alert('There was an error adding the dog. Please try again.');
+            }
+        });
+    </script>
+</body>
+</html>

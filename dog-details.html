@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dog Details - PawHaven</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gradient-to-br from-rose-100 to-teal-100 text-gray-800">
+   
+    <header class="bg-white/80 backdrop-blur-md shadow-md">
+      <div class="container mx-auto flex items-center justify-between p-4">
+        <a href="sihc.html" class="text-2xl font-bold text-rose-600 flex items-center gap-2">
+          <i data-lucide="paw-print" class="w-6 h-6"></i> PawHaven
+        </a>
+      </div>
+    </header>
+
+   
+    <main id="dog-details-container" class="py-12 px-6">
+      
+    </main>
+
+    <script>
+        lucide.createIcons();
+
+        window.addEventListener('DOMContentLoaded', async () => {
+            const container = document.getElementById('dog-details-container');
+            const params = new URLSearchParams(window.location.search);
+            const dogId = parseInt(params.get('id'));
+
+            if (!dogId) {
+                container.innerHTML = '<p class="text-center text-2xl text-red-600">No dog ID provided!</p>';
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://127.0.0.1:5000/api/dogs/${dogId}`);
+                if (!response.ok) {
+                    throw new Error('Dog not found or server error.');
+                }
+                const dog = await response.json();
+
+                if (!dog) {
+                    container.innerHTML = `
+                        <div class="text-center">
+                            <h2 class="text-3xl font-bold text-red-600">Dog not found!</h2>
+                            <p class="mt-4 text-gray-600">The dog you are looking for might have been adopted or the link is incorrect.</p>
+                            <a href="sihc.html" class="mt-6 inline-block bg-rose-600 text-white px-6 py-3 rounded-full font-semibold shadow-lg hover:bg-rose-700 transition">
+                                Back to Home
+                            </a>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = `
+                    <div class="max-w-5xl mx-auto bg-white/90 backdrop-blur-lg rounded-2xl shadow-xl overflow-hidden">
+                        <div class="grid md:grid-cols-2 gap-0">
+                            <!-- Image Gallery -->
+                            <div class="w-full h-full p-4 sm:p-6">
+                                <img id="main-image" class="h-96 w-full object-cover rounded-lg shadow-lg" src="${dog.imageUrls[0]}" alt="${dog.name}">
+                                <div id="thumbnail-container" class="flex gap-2 mt-4 justify-center">
+                                    ${dog.imageUrls.map((url, index) => `
+                                        <img src="${url}" class="w-16 h-16 object-cover rounded-md cursor-pointer border-2 ${index === 0 ? 'border-rose-500' : 'border-transparent'} hover:border-rose-400 transition" onclick="changeImage('${url}', this)">
+                                    `).join('')}
+                                </div>
+                            </div>
+                            <div class="p-8 md:p-10">
+                                <div class="flex justify-between items-start">
+                                    <h2 class="text-4xl md:text-5xl font-extrabold text-rose-700">${dog.name}</h2>
+                                    ${dog.breed ? `<span class="bg-teal-100 text-teal-800 text-sm font-semibold px-3 py-1 rounded-full">${dog.breed}</span>` : ''}
+                                </div>
+                                
+                                <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-6 text-center">
+                                    ${dog.age && dog.ageUnit ? `
+                                    <div class="bg-rose-50 p-3 rounded-lg">
+                                        <p class="text-sm text-rose-500 font-semibold">Age</p>
+                                        <p class="text-lg font-bold text-rose-800">${dog.age} ${dog.ageUnit}</p>
+                                    </div>` : ''}
+                                    ${dog.gender ? `
+                                    <div class="bg-rose-50 p-3 rounded-lg">
+                                        <p class="text-sm text-rose-500 font-semibold">Gender</p>
+                                        <p class="text-lg font-bold text-rose-800">${dog.gender}</p>
+                                    </div>` : ''}
+                                    ${dog.size ? `
+                                    <div class="bg-rose-50 p-3 rounded-lg">
+                                        <p class="text-sm text-rose-500 font-semibold">Size</p>
+                                        <p class="text-lg font-bold text-rose-800">${dog.size.split(' ')[0]}</p>
+                                    </div>` : ''}
+                                </div>
+
+                                <p class="text-gray-700 text-lg mt-6">${dog.description}</p>
+                                
+                                <div class="border-t border-rose-200 pt-6 mt-6">
+                                    <h3 class="text-2xl font-semibold text-teal-700 mb-4 flex items-center gap-3">
+                                        <i data-lucide="user-circle" class="w-6 h-6"></i>
+                                        Owner's Details
+                                    </h3>
+                                    <div class="space-y-2 text-gray-800">
+                                        <p><strong class="font-medium">Name:</strong> ${dog.ownerName}</p>
+                                        <p><strong class="font-medium">Contact:</strong> <a href="mailto:${dog.ownerContact}" class="text-rose-600 hover:underline">${dog.ownerContact}</a></p>
+                                    </div>
+                                </div>
+
+                                ${dog.vaccination ? `
+                                <div class="mt-6 bg-teal-50 border-l-4 border-teal-500 p-4 rounded-r-lg">
+                                    <p class="font-semibold text-teal-800">Vaccination: ${dog.vaccination}</p>
+                                </div>` : ''}
+
+                                <div class="mt-8">
+                                    <a href="sihc.html" class="inline-flex items-center gap-2 text-rose-600 hover:underline font-semibold">
+                                        <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                                        Back to all dogs
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                lucide.createIcons(); 
+            } catch (error) {
+                console.error('Error loading dog details:', error);
+                container.innerHTML = '<p class="text-center text-red-600">Could not load dog details. Is the backend server running?</p>';
+            }
+        });
+
+        function changeImage(newSrc, clickedThumbnail) {
+            document.getElementById('main-image').src = newSrc;
+            
+           
+            const thumbnails = document.querySelectorAll('#thumbnail-container img');
+            thumbnails.forEach(thumb => thumb.classList.remove('border-rose-500'));
+            clickedThumbnail.classList.add('border-rose-500');
+        }
+    </script>
+</body>
+</html>

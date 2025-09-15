@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>PawHaven — Find Your Furry Friend</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Lucide icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Framer Motion -->
+    <script src="https://unpkg.com/framer-motion/dist/framer-motion.umd.js"></script>
+  </head>
+  <body class="bg-gradient-to-br from-rose-100 to-teal-100 text-gray-800">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md shadow-md">
+      <div class="container mx-auto flex items-center justify-between p-4">
+        <h1 class="text-2xl font-bold text-rose-600 flex items-center gap-2">
+          <i data-lucide="paw-print" class="w-6 h-6"></i> PawHaven
+        </h1>
+        <nav>
+          <ul class="flex gap-6 font-medium">
+            <li><a href="#about" class="hover:text-rose-600 transition">About</a></li>
+            <li><a href="#dogs" class="hover:text-rose-600 transition">Dogs</a></li>
+            <li><a href="#contact" class="hover:text-rose-600 transition">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="text-center py-20 px-6">
+      <h2 class="text-5xl font-extrabold mb-4 text-rose-700">
+        Find Your Furry Friend Today 🐶
+      </h2>
+      <p class="text-lg text-gray-600 mb-6 max-w-xl mx-auto">
+        At PawHaven, we connect loving dogs with loving families. Adopt, don’t shop —
+        because every dog deserves a forever home.
+      </p>
+      <div class="flex justify-center gap-4">
+        <a
+          href="#dogs"
+          class="bg-rose-600 text-white px-6 py-3 rounded-full font-semibold shadow-lg hover:bg-rose-700 transition"
+        >
+          Browse Dogs
+        </a>
+        <a
+          href="add-dog.html"
+          class="bg-teal-600 text-white px-6 py-3 rounded-full font-semibold shadow-lg hover:bg-teal-700 transition"
+        >
+          List a Dog
+        </a>
+      </div>
+    </section>
+
+    <!-- Featured Dogs -->
+    <section id="dogs" class="py-16 px-6 bg-white/70 backdrop-blur-sm">
+      <h3 class="text-3xl font-bold text-center mb-12 text-rose-700">Featured Dogs</h3>
+      <div id="dog-grid" class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+      
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="py-16 px-6 text-center bg-gradient-to-r from-rose-200 to-teal-200">
+      <h3 class="text-3xl font-bold mb-6 text-rose-700">Get in Touch</h3>
+      <p class="text-gray-700 mb-6">Want to know more about adoption or volunteer opportunities?</p>
+      <a
+        href="mailto:info@pawhaven.com"
+        class="bg-rose-600 text-white px-6 py-3 rounded-full font-semibold shadow-lg hover:bg-rose-700 transition"
+      >
+        Contact Us
+      </a>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white/80 backdrop-blur-md py-6 text-center">
+      <div class="border-t border-rose-500 pt-4 text-sm text-gray-600">
+        &copy; <span id="year"></span> PawHaven. All rights reserved. Made with ❤ for rescue dogs.
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+      lucide.createIcons();
+      document.getElementById("year").textContent = new Date().getFullYear();
+
+    
+      window.addEventListener('DOMContentLoaded', async () => {
+        const dogGrid = document.getElementById('dog-grid');
+        
+        try {
+            const response = await fetch('http://127.0.0.1:5000/api/dogs');
+            if (!response.ok) {
+                throw new Error('Failed to fetch dogs from the server.');
+            }
+            const dogs = await response.json();
+
+            if (dogs.length === 0) {
+                dogGrid.innerHTML = '<p class="text-center text-gray-600 col-span-3">No dogs have been listed for adoption yet. Be the first!</p>';
+                return;
+            }
+
+            dogGrid.innerHTML = ''; 
+            dogs.forEach(dog => {
+                
+                const mainImage = dog.imageUrls && dog.imageUrls.length > 0 ? dog.imageUrls[0] : 'https://place-puppy.com/400x300';
+                const dogCard = `
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300">
+                        <img src="${mainImage}" alt="${dog.name}" class="w-full h-56 object-cover" />
+                        <div class="p-6">
+                            <h4 class="text-xl font-bold mb-2">${dog.name}</h4>
+                            <p class="text-gray-600 mb-4 truncate">${dog.description}</p>
+                            <a href="dog-details.html?id=${dog.id}" class="bg-teal-600 text-white px-4 py-2 rounded-full hover:bg-teal-700 transition">
+                                Adopt Me
+                            </a>
+                        </div>
+                    </div>
+                `;
+                dogGrid.innerHTML += dogCard;
+            });
+        } catch (error) {
+            console.error('Error loading dogs:', error);
+            dogGrid.innerHTML = '<p class="text-center text-red-600 col-span-3">Could not load dogs. Is the backend server running?</p>';
+        }
+      });
+    </script>
+  </body>
+</html>
